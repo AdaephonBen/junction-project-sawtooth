@@ -1,0 +1,10 @@
+xo create game1 --url http://rest-api:8008
+ xo list --url http://rest-api:8008
+intkey set danger_status 1 --url http://rest-api:8008
+intkey set danger_status1 0 --url http://rest-api:8008
+
+
+ docker-compose -f sawtooth-default-pbft.yaml up
+ docker exec -it sawtooth-rest-api-default-0 bash
+ 
+ http://sawtooth-rest-api-default-0:8008
