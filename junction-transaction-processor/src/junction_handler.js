@@ -1,7 +1,8 @@
 const {} = require("sawtooth-sdk/processor/handler");
 const { TransactionHandler } = require("sawtooth-sdk/processor/handler");
 const { InternalError } = require("sawtooth-sdk").exceptions;
-const { decodeData, hash } = require("./lib/helper.js");
+const { decodeData, hash } = require("./lib/helper");
+const env = require('./lib/env');
 const cbor = require("cbor");
 //const FAMILY_NAME = "junction-family",VERSION = "1.0", NAMESPACE = ["Junction", "Danger", hash(FAMILY_NAME)];
 
