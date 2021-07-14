@@ -1,10 +1,10 @@
 const { TransactionProcessor } = require('sawtooth-sdk/processor');
 const env = require('./env');
 
-const WalletHandler = require('./src/junction_handler');
+const JunctionHandler = require('./src/junction_handler');
 
 const transactionProcessor = new TransactionProcessor(env.VALIDATOR);
-transactionProcessor.addHandler(new IntKeyHandler());
+transactionProcessor.addHandler(new JunctionHandler());
 transactionProcessor.start();
 console.log("Registered")
 
