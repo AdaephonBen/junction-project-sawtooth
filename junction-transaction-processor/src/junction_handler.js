@@ -43,12 +43,11 @@ class JunctionHandler extends TransactionHandler {
               let stateValue = possibleAddressValues[address];
               if (stateValue && stateValue.length) {
                 let value = cbor.decodeFirstSync(stateValue);
+                return value;
               }
             });
           default:
-            throw new InvalidTransaction(
-              "The action is invalid or not supported"
-            );
+            throw new InvalidTransaction("The action is invalid or not supported");
         }
       })
       .catch((err) => {
