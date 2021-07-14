@@ -1,15 +1,13 @@
-const {} = require("sawtooth-sdk/processor/hadnler");
+const {} = require("sawtooth-sdk/processor/handler");
 const { TransactionHandler } = require("sawtooth-sdk/processor/handler");
 const { InternalError } = require("sawtooth-sdk").exceptions;
 const { decodeData, hash } = require("./lib/helper.js");
 const cbor = require("cbor");
-const FAMILY_NAME = "junction-family",
-  VERSION = "1.0",
-  NAMESPACE = ["Junction", "Danger", hash(FAMILY_NAME)];
+//const FAMILY_NAME = "junction-family",VERSION = "1.0", NAMESPACE = ["Junction", "Danger", hash(FAMILY_NAME)];
 
-class junction_handler extends TransactionHandler {
+class JunctionHandler extends TransactionHandler {
   constructor() {
-    super(FAMILY_NAME, VERSION, NAMESPACE);
+    super(env.FAMILY_NAME, env.VERSION, env.NAMESPACE);
   }
 
   apply(transactionRequest, context) {
@@ -58,5 +56,5 @@ class junction_handler extends TransactionHandler {
       });
   }
 }
-module.exports = IntKeyHandler;
+module.exports = JunctionHandler;
 
