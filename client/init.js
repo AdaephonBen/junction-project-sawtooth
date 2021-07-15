@@ -9,7 +9,7 @@ const signer = new CryptoFactory(context).newSigner(privateKey);
 
 const output = `PRIVATE_KEY=${privateKey.asHex()}\nPUBLIC_KEY=${signer
   .getPublicKey()
-  .asHex()}\nREST_API_URL=http://localhost:8008`;
+  .asHex()}`;
 
 fs.writeFile(path.resolve(__dirname, "./.env"), output, (err) => {
   if (err) {
