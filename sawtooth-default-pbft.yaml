@@ -178,6 +178,10 @@ services:
     volumes:
       - pbft-shared:/pbft-shared
     stop_signal: SIGKILL
+    command: |
+        bash -c "
+        tail -f /dev/null
+        "
 
 # -------------=== validators ===-------------
 
