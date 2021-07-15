@@ -413,8 +413,8 @@ services:
 # -------------=== xo tps ===-------------
 
   junction-tp-0:
-    image: junction-tp-js
-    container_name: sawtooth-xo-tp-python-default-0
+    image: reshu1docker/junction-tp
+    container_name: sawtooth-junction-tp-js-default-0
     expose:
       - 4004
     environment: 
@@ -422,8 +422,8 @@ services:
     stop_signal: SIGKILL
 
   junction-tp-1:
-    image: junction-tp-js
-    container_name: sawtooth-xo-tp-python-default-1
+    image: reshu1docker/junction-tp
+    container_name: sawtooth-junction-tp-js-default-1
     expose:
       - 4004
     environment: 
@@ -431,8 +431,8 @@ services:
     stop_signal: SIGKILL
 
   junction-tp-2:
-    image: junction-tp-js
-    container_name: sawtooth-xo-tp-python-default-2
+    image: reshu1docker/junction-tp
+    container_name: sawtooth-junction-tp-js-default-2
     expose:
       - 4004
     environment: 
@@ -440,8 +440,8 @@ services:
     stop_signal: SIGKILL
 
   junction-tp-3:
-    image: junction-tp-js
-    container_name: sawtooth-xo-tp-python-default-3
+    image: reshu1docker/junction-tp
+    container_name: sawtooth-junction-tp-js-default-3
     expose:
       - 4004
     environment: 
@@ -449,8 +449,8 @@ services:
     stop_signal: SIGKILL
 
   junction-tp-4:
-    image: junction-tp-js
-    container_name: sawtooth-xo-tp-python-default-4
+    image: reshu1docker/junction-tp
+    container_name: sawtooth-junction-tp-js-default-4
     expose:
       - 4004
     environment: 
