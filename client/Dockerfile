@@ -1,5 +1,4 @@
 FROM node:10
-
 # If possible, run your container using `docker run --init`
 # Otherwise, you can use `tini`:
 # RUN apk add --no-cache tini
@@ -15,6 +14,6 @@ RUN rm -rf "node_modules"
 
 RUN npm ci --prod
 
-CMD ["node", "init.js"]
+RUN ["node", "init.js"]
 # CMD ["node", "index.js", "register_event", "--id", "UP32CE6780", "--latitude", "26.83", "--longitude", "80.06", "--orientation", "270", "--metadata", "person fall down"]
 # CMD ["node", "index.js", "get_event", "--id", "UP32CE6780"]

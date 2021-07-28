@@ -27,7 +27,9 @@ console.log(argv);
 const env = require("./env");
 const input = require("./input");
 
-const enclave = EnclaveFactory(Buffer.from(env.privateKey, "hex"));
+const enclave = EnclaveFactory();
+
+console.log(enclave);
 
 const junctionClient = SawtoothClientFactory({
   enclave: enclave,
@@ -57,6 +59,7 @@ if (newPayload.action === "register_event") {
 console.log(newPayload);
 
 if (input.payloadIsValid(newPayload)) {
+	console.log("Hello")
   input.submitPayload(newPayload, junctionTransactor);
 } else {
   console.log(`Oops! Your payload failed validation and was not submitted.`);

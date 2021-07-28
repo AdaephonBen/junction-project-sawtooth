@@ -1,5 +1,6 @@
 const input = {
   payloadIsValid: (payload) => {
+	  console.log("Inside payloadIsValid")
     if (payload.action === "register_event") {
       return (
         payload.id !== undefined &&
