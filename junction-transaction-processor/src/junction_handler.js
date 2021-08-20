@@ -8,12 +8,16 @@ const cbor = require("cbor");
 
 class JunctionHandler extends TransactionHandler {
   constructor() {
-    super(env.FAMILY_NAME, env.VERSION, env.NAMESPACE);
+    super(env.FAMILY, env.VERSION, env.NAMESPACE);
   }
 
-  apply(transactionRequest, context) {
-    return decodeData(transactionRequest.payload)
-      .then((payload) => {
+  async apply(transactionRequest, context) {
+        try {
+            console.log("going to decode");
+            console.log(transactionRequest.payload);
+            const payload_1 = await cbor.decodeFirstSync(transactionRequest.payload);
+            console.log("payload_1");
+            console.log(payload_1);
         /**
          * CarID : UP32CE6780
          * Latitude: 26.83
@@ -21,17 +25,29 @@ class JunctionHandler extends TransactionHandler {
          * Orientation: 270
          * Metadata: Person Fall down
          */
-        if (!payload.action) {
+        if (!payload_1.action) {
           throw new InvalidTransaction("Payload doesnot contain action");
         }
-        if (!payload.id) {
+        if (!payload_1.id) {
           throw new InvalidTransaction("Payload does not contain id");
         }
-        if (!payload.data) {
-          throw new InvalidTransaction("Payload does not contain the data");
+        if (!payload_1.data.car_id) {
+          throw new InvalidTransaction("Payload does not contain id");
         }
-        let action = payload.action;
-        let address = NAMESPACE[2] + hash(id).substring(0, 64);
+        if (!payload_1.data.latitude) {
+          throw new InvalidTransaction("Payload does not contain the latitude");
+        }
+        if (!payload_1.data.longitude) {
+          throw new InvalidTransaction("Payload does not contain the longitude");
+        }
+        if (!payload_1.data.orientation) {
+          throw new InvalidTransaction("Payload does not contain the orientation");
+        }
+        if (!payload_1.data.metadata) {
+          throw new InvalidTransaction("Payload does not contain the metadata");
+        }
+        let action = payload_1.action;
+        var address = hash(env.FAMILY.substr(0,6)) + hash(payload_1.data.car_id).substring(0, 64);
         switch (action) {
           case "register_event":
             //If yes is received from AI module
