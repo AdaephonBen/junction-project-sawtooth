@@ -1,14 +1,9 @@
-//const {} = require('sawtooth-sdk/processor/handler');
 const { TransactionHandler } = require('sawtooth-sdk/processor/handler');
 const {InternalError} =require('sawtooth-sdk').exceptions;
-//const payload_j= require('./payload');
 const {decodeData, hash} = require('./lib/helper');
 const cbor = require('cbor');
 const env = require('./lib/env');
-//const { decodeFirstSync } = require('cbor/types/lib/decoder');
-//const FAMILY_NAME = "junction-family", VERSION = "1.0", NAMESPACE = ["Junction","Junction_p",hash(FAMILY_NAME)];
 console.log("inside junction handler1");
-//console.log(payload_j.Junction_Payload.fromBytes([254,33]));
 
 class junctionHandler extends TransactionHandler {
 
@@ -30,7 +25,6 @@ class junctionHandler extends TransactionHandler {
            * Orientation: 270
            * Metadata: Person Fall down
            */
-            //   let payload = Junction_Payload.fromBytes(transactionProcessRequest.payload)
             console.log("inside apply");
             console.log(payload_1.action);
             console.log(payload_1.data.car_id);
@@ -58,6 +52,8 @@ class junctionHandler extends TransactionHandler {
             var action = payload_1.action;
             console.log("hash of family name");
             console.log(hash(env.FAMILY.substr(0,6)));
+            console.log("print payload_1.data");
+            console.log(typeof payload_1.data);
             console.log("hash of car id");
             console.log(hash(payload_1.data.car_id).substring(0, 64));
             var address = hash(env.FAMILY.substr(0,6)) + hash(payload_1.data.car_id).substring(0, 64);
@@ -69,12 +65,46 @@ class junctionHandler extends TransactionHandler {
             if(payload_1.action == "register_event"){  
                     //If yes is received from AI module
                     console.log("hi save data");
-                    let entries = {
-                      [address]: cbor.encode(payload_1.data)
-                    };
-                    const random = Math.floor(Math.random() * 2);
+                    const random = Math.floor(Math.random() * 3);
                     console.log(random);
                     if (random == 0) {
+                        let alert = {
+                            info: 'Yes Danger'
+                        };
+                        console.log(alert);
+                        let payload_2 = {
+                            ...payload_1.data,
+                            ...alert
+                        };
+                        let entries = {
+                            [address]: cbor.encode(payload_2)
+                        };
+                        context.setState(entries);
+                    }else if(random == 1){
+                        let alert = {
+                            info: 'No Danger'
+                        };
+                        console.log(alert);
+                        let payload_2 = {
+                            ...payload_1.data,
+                            ...alert
+                        };
+                        let entries = {
+                            [address]: cbor.encode(payload_2)
+                        };
+                        context.setState(entries);
+                    }else{
+                        let alert = {
+                            info: 'I dont know'
+                        };
+                        console.log(alert);
+                        let payload_2 = {
+                            ...payload_1.data,
+                            ...alert
+                        };
+                        let entries = {
+                            [address]: cbor.encode(payload_2)
+                        };
                         context.setState(entries);
                     }
             }
@@ -98,4 +128,4 @@ class junctionHandler extends TransactionHandler {
     }
 }
 module.exports = junctionHandler;
-//module.exports = Junction_Payload;
+
