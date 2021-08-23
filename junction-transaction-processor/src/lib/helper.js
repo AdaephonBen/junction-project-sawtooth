@@ -1,6 +1,8 @@
-const crypto = require('crypto');
-const cbor =require('cbor')
-const { InvalidTransaction, InternalError } = require('sawtooth-sdk/processor/exceptions')
+const crypto =require('crypto');
+const cbor =require('cbor');
+const { InvalidTransaction, InternalError } = require('sawtooth-sdk/processor/exceptions');
+const { stringify } = require('querystring');
+console.log("inside helper");
 
 const decodeCbor = (buffer) =>
     new Promise((resolve, reject) =>
@@ -22,18 +24,41 @@ const applySet = (context, address, name, value) => (possibleAddressValues) => {
         let stateName = stateValue[name]
         if (stateName) {
             throw new InvalidTransaction(
-                `Wallet Name is already in state, Name: ${name} Value: ${stateName}`
+                `This danger is already registered by, Name: ${name} Value: ${stateName}`
             )
         }
     }
+    if (!stateValue) {
+        stateValue = {}
+    }
+
+    stateValue[name] = value
+
+    return setEntry(context, address, stateValue)
+}
 
 const decodeData = (payload) => {
     return new Promise((resolve,reject) =>{
-        let result = JSON.parse(payload);
+        console.log("Hello");
+        //console.log(cbor.decodeFirst(payload));
+        //console.log(atob(stringify(Buffer.from(payload))));
+        console.log("hii");
+        console.log(decodeCbor(payload));
+        console.log("buff+decode");
+        console.log(cbor.decodeFirstSync(Buffer.from(payload)));
+        console.log("computing result");
+        console.log(typeof payload);
+        console.log(typeof cbor.decodeFirstSync(payload));
+        let result = JSON.parse(cbor.decodeFirstSync(payload));
+        console.log("result");
+        console.log(typeof result);
+        console.log(result);
         result ? resolve(result) : reject(result);
     })
 }
-const hash = (x) => crypto.createHash('sha512').update(x).digest('hex').toLowerCase().substr(0,6);
+const hash = (x) => crypto.createHash('sha512').update(x).digest('hex').toLowerCase();
+console.log("hash created");
+
 module.exports = {
     decodeData,
     hash,
