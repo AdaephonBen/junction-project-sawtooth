@@ -25,6 +25,7 @@ const SawtoothClientFactory = (factoryOptions) => {
       const _familyNamespace = transactorOptions.familyNamespace || leafHash(transactorOptions.familyName, 6)
       const _familyVersion = transactorOptions.familyVersion || '1.0'
       const _familyEncoder = transactorOptions.familyEncoder || cbor.encode
+      console.log(_familyNamespace);
       return {
         async post(payload, txnOptions) {
 
