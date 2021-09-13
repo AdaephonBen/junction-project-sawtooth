@@ -25,6 +25,15 @@ class junctionHandler extends TransactionHandler {
             //else { console.log('decoded request');}
             console.log("payload_1");
             console.log(payload_1);
+	    let is_issue = false;
+	    fetch(process.env.URL, {
+		method: "POST",
+		body: payload_1.video
+	    }).then(response => {
+		if (response) {
+			is_issue = true;
+		}
+	    })
             /**
            * id : UP32CE6780
            * Latitude: 26.83
@@ -39,7 +48,7 @@ class junctionHandler extends TransactionHandler {
             if (!payload_1.action) {
                 throw new InvalidTransaction("Payload doesnot contain action");
             }
-            if(payload_1.action == "register_event"){
+            if(payload_1.action == "register_event" && is_issue){
                 if (!payload_1.data.car_id) {
                     throw new InvalidTransaction("Payload does not contain id");
                 }
@@ -90,6 +99,7 @@ class junctionHandler extends TransactionHandler {
 	    }
             if(payload_1.action == "register_event" && !duplicate){  
                     //If yes is received from AI module
+
                     console.log("hi save data");
 		    payload_1.info = process.env.INFO;
 		    console.log(payload_1);
