@@ -181,10 +181,6 @@ services:
     stop_signal: SIGKILL
     environment:
       - REST_API_URL=http://rest-api-0:8008
-    command: |
-        bash -c "
-        tail -f /dev/null
-        "
 
   shell-1:
     image: adaephonben/client:latest
@@ -195,10 +191,6 @@ services:
     stop_signal: SIGKILL
     environment:
       - REST_API_URL=http://rest-api-1:8008
-    command: |
-        bash -c "
-        tail -f /dev/null
-        "
 
   shell-2:
     image: adaephonben/client:latest
@@ -209,10 +201,6 @@ services:
     stop_signal: SIGKILL
     environment:
       - REST_API_URL=http://rest-api-2:8008
-    command: |
-        bash -c "
-        tail -f /dev/null
-        "
 
   shell-3:
     image: adaephonben/client:latest
@@ -223,10 +211,6 @@ services:
     stop_signal: SIGKILL
     environment:
       - REST_API_URL=http://rest-api-3:8008
-    command: |
-        bash -c "
-        tail -f /dev/null
-        "
 
   shell-4:
     image: adaephonben/client:latest
@@ -237,10 +221,6 @@ services:
     stop_signal: SIGKILL
     environment:
       - REST_API_URL=http://rest-api-4:8008
-    command: |
-        bash -c "
-        tail -f /dev/null
-        "
 
 # -------------=== validators ===-------------
 
