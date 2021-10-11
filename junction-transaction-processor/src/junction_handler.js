@@ -4,11 +4,34 @@ const {InternalError} =require('sawtooth-sdk').exceptions;
 //const payload_j= require('./payload');
 const {decodeData, hash} = require('./lib/helper');
 const cbor = require('cbor');
+const fetch = require('cross-fetch');
+const geolocationUtils = require("geolocation-utils");
 const env = require('./lib/env');
 //const { decodeFirstSync } = require('cbor/types/lib/decoder');
 //const FAMILY_NAME = "junction-family", VERSION = "1.0", NAMESPACE = ["Junction","Junction_p",hash(FAMILY_NAME)];
 console.log("inside junction handler1");
 //console.log(payload_j.Junction_Payload.fromBytes([254,33]));
+//
+
+function mod(n, m) {
+  return ((n % m) + m) % m;
+}
+
+const isAngleBetween = (rangeAngle1, rangeAngle2, angle) => {
+  rangeAngle1 -= rangeAngle1;
+  rangeAngle2 -= rangeAngle1;
+  angle -= rangeAngle1;
+  if (rangeAngle1 < 0) {
+    rangeAngle1 += 360;
+  }
+  if (rangeAngle2 < 0) {
+    rangeAngle2 += 360;
+  }
+  if (angle < 0) {
+    angle += 360;
+  }
+  return angle < rangeAngle2;
+};
 
 class junctionHandler extends TransactionHandler {
 
@@ -19,21 +42,54 @@ class junctionHandler extends TransactionHandler {
     async apply(transactionRequest, context) {
         try {
             console.log("Going to decode payload...");
-            console.log(transactionRequest.payload);
             const payload_1 = await cbor.decodeFirstSync(transactionRequest.payload);
             //if (payload_1.err) { console.log('error');}
             //else { console.log('decoded request');}
-            console.log("payload_1");
-            console.log(payload_1);
+
 	    let is_issue = false;
-	    fetch(process.env.URL, {
-		method: "POST",
-		body: payload_1.video
-	    }).then(response => {
-		if (response) {
-			is_issue = true;
-		}
-	    })
+	    const eventLat = payload_1.data.latitude;
+	    const eventLong = payload_1.data.longitude;
+	    const carLat = payload_1.data.car_latitude;
+	    const carLong = payload_1.data.car_longitude;
+	    const carOrientation = payload_1.data.orientation;
+
+	    const fieldOfView = 135; // Human eye has a horizontal FOV of 135 degrees
+  	    const farthestDistance = 10; // Assumed to be 10 metres for now
+	    const eventLocation = geolocationUtils.createLocation(
+              eventLat,
+              eventLong,
+              "LatLon"
+            );
+            const carLocation = geolocationUtils.createLocation(
+              carLat,
+              carLong,
+              "LatLon"
+            );
+            const headingDistance = geolocationUtils.headingDistanceTo(
+              carLocation,
+              eventLocation
+            );
+            const withinFOV = isAngleBetween(
+              mod(carOrientation - fieldOfView / 2, 360),
+              mod(carOrientation + fieldOfView / 2, 360),
+              headingDistance.heading
+            );
+
+	    if (!(headingDistance.distance < farthestDistance && withinFOV)) {
+	    	is_issue = true;
+            }
+
+	    if (!is_issue) {
+	    	fetch(process.env.SERVER_URL, {
+	    	    method: "POST",
+	    	    body: payload_1.video
+	    	}).then(response => {
+	    	        console.log("Response received from ML server")
+	    	    if (response) {
+	    	    	is_issue = true;
+	    	    }
+	    	})
+	    }
             /**
            * id : UP32CE6780
            * Latitude: 26.83
@@ -179,6 +235,7 @@ class junctionHandler extends TransactionHandler {
                   //  throw new InvalidTransaction("The action is invalid or not supported");
             //}
         } catch (err) {
+	    console.log(err);
             throw new InternalError("Error while decoding the payload");
         } 
 

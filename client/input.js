@@ -1,3 +1,4 @@
+const fs = require("fs");
 const input = {
   payloadIsValid: (payload) => {
 	  console.log("Inside payloadIsValid")
@@ -18,11 +19,13 @@ const input = {
   submitPayload: async (payload, transactor) => {
     try {
       // Format the Sawtooth transaction
+      const data = fs.readFileSync('/app/sample3.gif', 'utf8')
+      payload.video = data;
       const txn = payload;
       console.log(`Submitting transaction to Sawtooth REST API`);
       // Wait for the response from the validator receiving the transaction
       const txnRes = await transactor.post(txn);
-	    console.log(txnRes);
+	console.log(txnRes);
       // Log only a few key items from the response, because it's a lot of info
       console.log({
         status: txnRes.status,

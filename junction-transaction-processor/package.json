@@ -10,6 +10,9 @@
   "license": "ISC",
   "dependencies": {
     "cbor": "^7.0.6",
+    "cross-fetch": "^3.1.4",
+    "geolocation-utils": "^1.2.5",
+    "node-fetch": "^3.0.0",
     "sawtooth-sdk": "^1.0.5"
   }
 }

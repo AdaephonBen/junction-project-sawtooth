@@ -172,12 +172,71 @@ services:
 
 # -------------=== shell ===-------------
 
-  shell:
+  shell-0:
     image: adaephonben/client:latest
-    container_name: sawtooth-shell-default
+    container_name: sawtooth-shell-default-0
     volumes:
       - pbft-shared:/pbft-shared
+      - /home/adaephonben/Human-Falling-Detect-Tracks/sample3.gif:/app/sample3.gif
     stop_signal: SIGKILL
+    environment:
+      - REST_API_URL=http://rest-api-0:8008
+    command: |
+        bash -c "
+        tail -f /dev/null
+        "
+
+  shell-1:
+    image: adaephonben/client:latest
+    container_name: sawtooth-shell-default-1
+    volumes:
+      - pbft-shared:/pbft-shared
+      - /home/adaephonben/Human-Falling-Detect-Tracks/sample3.gif:/app/sample3.gif
+    stop_signal: SIGKILL
+    environment:
+      - REST_API_URL=http://rest-api-1:8008
+    command: |
+        bash -c "
+        tail -f /dev/null
+        "
+
+  shell-2:
+    image: adaephonben/client:latest
+    container_name: sawtooth-shell-default-2
+    volumes:
+      - pbft-shared:/pbft-shared
+      - /home/adaephonben/Human-Falling-Detect-Tracks/sample3.gif:/app/sample3.gif
+    stop_signal: SIGKILL
+    environment:
+      - REST_API_URL=http://rest-api-2:8008
+    command: |
+        bash -c "
+        tail -f /dev/null
+        "
+
+  shell-3:
+    image: adaephonben/client:latest
+    container_name: sawtooth-shell-default-3
+    volumes:
+      - pbft-shared:/pbft-shared
+      - /home/adaephonben/Human-Falling-Detect-Tracks/sample3.gif:/app/sample3.gif
+    stop_signal: SIGKILL
+    environment:
+      - REST_API_URL=http://rest-api-3:8008
+    command: |
+        bash -c "
+        tail -f /dev/null
+        "
+
+  shell-4:
+    image: adaephonben/client:latest
+    container_name: sawtooth-shell-default-4
+    volumes:
+      - pbft-shared:/pbft-shared
+      - /home/adaephonben/Human-Falling-Detect-Tracks/sample3.gif:/app/sample3.gif
+    stop_signal: SIGKILL
+    environment:
+      - REST_API_URL=http://rest-api-4:8008
     command: |
         bash -c "
         tail -f /dev/null
@@ -420,6 +479,7 @@ services:
     environment: 
       - VALIDATOR_URL=tcp://validator-0:4004
       - INFO=Yes
+      - SERVER_URL=http://candle01.cse.iith.ac.in:8000
     stop_signal: SIGKILL
 
   junction-tp-1:
@@ -430,6 +490,7 @@ services:
     environment: 
       - VALIDATOR_URL=tcp://validator-1:4004
       - INFO=Yes
+      - SERVER_URL=http://candle01.cse.iith.ac.in:8000
     stop_signal: SIGKILL
 
   junction-tp-2:
@@ -440,6 +501,7 @@ services:
     environment: 
       - VALIDATOR_URL=tcp://validator-2:4004
       - INFO=Yes
+      - SERVER_URL=http://candle01.cse.iith.ac.in:8000
     stop_signal: SIGKILL
 
   junction-tp-3:
@@ -450,6 +512,7 @@ services:
     environment: 
       - VALIDATOR_URL=tcp://validator-3:4004
       - INFO=No
+      - SERVER_URL=http://candle01.cse.iith.ac.in:8000
     stop_signal: SIGKILL
 
   junction-tp-4:
@@ -460,4 +523,5 @@ services:
     environment: 
       - VALIDATOR_URL=tcp://validator-4:4004
       - INFO=Yes
+      - SERVER_URL=http://candle01.cse.iith.ac.in:8000
     stop_signal: SIGKILL

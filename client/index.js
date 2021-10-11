@@ -4,9 +4,7 @@ const argv = require("yargs")
   .command("register_event", "register a new event", {
     id: {
       describe: "Car ID",
-    },
-    latitude: {
-      describe: "Latitude",
+    }, latitude: { describe: "Latitude",
     },
     longitude: {
       describe: "Longitude",
@@ -15,6 +13,8 @@ const argv = require("yargs")
       describe: "Orientation",
     },
     metadata: { describe: "Metadata" },
+    car_latitude: {describe: "Latitude"},
+    car_longitude: {describe: "Longitude"}
   })
   .command("get_event", "Get event details", {
     id: { describe: "Car ID" },
@@ -53,6 +53,8 @@ if (newPayload.action === "register_event") {
     longitude: argv.longitude,
     orientation: argv.orientation,
     metadata: argv.metadata,
+    car_latitude: argv.car_latitude,
+    car_longitude: argv.car_longitude
   };
 }
 
