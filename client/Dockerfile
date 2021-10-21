@@ -20,6 +20,7 @@ RUN apt-get update && \
 RUN ["node", "init.js"]
 RUN ["python3", "-m", "pip", "install", "--upgrade", "pip"]
 RUN ["python3", "-m", "pip", "install", "opencv-python"]
+RUN ["python3", "-m", "pip", "install", "requests"]
 RUN usermod -a -G video root
 
 CMD ["python3", "script.py"]
