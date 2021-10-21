@@ -2,6 +2,7 @@
 import cv2
 import time
 import os
+import requests
 # define a video capture object
 vid = cv2.VideoCapture(0)
 if vid.isOpened() == False:
