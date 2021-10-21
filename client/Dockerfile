@@ -20,7 +20,7 @@ RUN apt-get update && \
 RUN ["node", "init.js"]
 RUN ["python3", "-m", "pip", "install", "--upgrade", "pip"]
 RUN ["python3", "-m", "pip", "install", "opencv-python"]
-RUN sudo usermod -a -G video developer
+RUN usermod -a -G video root
 
 CMD ["python3", "script.py"]
 # CMD ["node", "index.js", "register_event", "--id", "UP32CE6780", "--latitude", "26.83", "--longitude", "80.06", "--orientation", "270", "--metadata", "person fall down"]
