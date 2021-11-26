@@ -46,6 +46,7 @@ class junctionHandler extends TransactionHandler {
       //else { console.log('decoded request');}
 
       let is_issue = false;
+      let url = "";
 
       const eventDistance = payload_1.data.event_distance;
 
@@ -61,8 +62,10 @@ class junctionHandler extends TransactionHandler {
           body: payload_1.video,
         }).then((response) => {
           console.log("Response received from ML server");
-          if (response) {
+          response = JSON.parse(response);
+          if (response["result"]) {
             is_issue = true;
+            url = response["url"];
           }
         });
       }
@@ -139,6 +142,7 @@ class junctionHandler extends TransactionHandler {
 
         console.log("hi save data");
         payload_1.info = process.env.INFO;
+        payload_1.video_url = url;
         console.log(payload_1);
         let entries = {
           [address]: cbor.encode(payload_1),
