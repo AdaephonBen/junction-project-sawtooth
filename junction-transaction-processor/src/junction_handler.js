@@ -56,19 +56,19 @@ class junctionHandler extends TransactionHandler {
         is_issue = true;
       }
 
-      if (!is_issue) {
-        fetch(process.env.SERVER_URL, {
-          method: "POST",
-          body: payload_1.video,
-        }).then((response) => {
-          console.log("Response received from ML server");
-          response = JSON.parse(response);
-          if (response["result"]) {
-            is_issue = true;
-            url = response["url"];
-          }
-        });
-      }
+      // if (!is_issue) {
+      //   fetch(process.env.SERVER_URL, {
+      //     method: "POST",
+      //     body: payload_1.video,
+      //   }).then((response) => {
+      //     console.log("Response received from ML server");
+      //     response = JSON.parse(response);
+      //     if (response["result"]) {
+      //       is_issue = true;
+      //       url = response["url"];
+      //     }
+      //   });
+      // }
       /**
        * id : UP32CE6780
        * Latitude: 26.83
