@@ -16,7 +16,7 @@ version: '3.6'
 
 services:
   rest-api-3:
-    image: adaephonben/sawtooth-core-restapi
+    image: hyperledger/sawtooth-rest-api:chime
     container_name: sawtooth-rest-api-default-3
     expose:
       - 8008
@@ -27,21 +27,27 @@ services:
           --bind rest-api-3:8008
       "
     stop_signal: SIGKILL
+    
   settings-tp-3:
-    image: adaephonben/sawtooth-core-settings
+    image: hyperledger/sawtooth-settings-tp:chime
     container_name: sawtooth-settings-tp-default-3
     expose:
       - 4004
     command: settings-tp -C tcp://validator-3:4004
     stop_signal: SIGKILL
+    
   shell-3:
-    image: adaephonben/client:latest
-    container_name: sawtooth-shell-default-0
+    image: reshu1docker/client-js:latest
+    container_name: sawtooth-shell-default-3
     stop_signal: SIGKILL
     environment:
       - REST_API_URL=http://rest-api-3:8008
+      - Server_url=http://172.19.111.172:8000
+      - cam_url=http://172.19.111.175:8080/video
+      - CLIENT_NUMBER=1
+      
   validator-3:
-    image: adaephonben/sawtooth-core-validator
+    image: adaephonben/validator-rest-3:latest
     container_name: sawtooth-validator-default-3
     expose:
       - 4004
@@ -52,18 +58,27 @@ services:
       - "5050:5050"
       - "8800:8800"
     command: tail -f /dev/null
+    environment:
+      MY_IP: ""
+      OTHER_IP_1: ""
+      OTHER_IP_2: ""
+      OTHER_IP_3: ""
+
+
   pbft-3:
-    image: adaephonben/sawtooth-pbft
+    image: hyperledger/sawtooth-pbft-engine:chime
     container_name: sawtooth-pbft-engine-default-3
     command: pbft-engine -vv --connect tcp://validator-3:5050
     stop_signal: SIGKILL
+    
   junction-tp-3:
-    image: adaephonben/junction-tp:latest
+    image: reshu1docker/junction-tp-js:latest
     container_name: sawtooth-junction-tp-js-default-3
     expose:
       - 4004
     environment: 
       - VALIDATOR_URL=tcp://validator-3:4004
       - INFO=Yes
-      - SERVER_URL=http://candle01.cse.iith.ac.in:8000
+      - Server_url=http://172.19.111.172:8000
+      - cam_url=http://172.19.111.175:8080/video
     stop_signal: SIGKILL

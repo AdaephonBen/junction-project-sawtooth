@@ -16,32 +16,46 @@ version: '3.6'
 
 services:
   rest-api-0:
-    image: adaephonben/sawtooth-core-restapi
+    image: hyperledger/sawtooth-rest-api:chime
     container_name: sawtooth-rest-api-default-0
     expose:
       - 8008
     command: |
-      bash -c "
+      sh -c "
         sawtooth-rest-api \
           --connect tcp://validator-0:4004 \
           --bind rest-api-0:8008
       "
     stop_signal: SIGKILL
+  
   settings-tp-0:
-    image: adaephonben/sawtooth-core-settings
+    image: hyperledger/sawtooth-settings-tp:chime
     container_name: sawtooth-settings-tp-default-0
     expose:
       - 4004
     command: settings-tp -C tcp://validator-0:4004
     stop_signal: SIGKILL
+    
+  intkey-tp-0:
+    image: hyperledger/sawtooth-intkey-tp-python:chime
+    container_name: sawtooth-intkey-tp-python-default-0
+    expose:
+      - 4004
+    command: intkey-tp-python -C tcp://validator-0:4004
+    stop_signal: SIGKILL
+  
   shell-0:
-    image: adaephonben/client:latest
+    image: reshu1docker/client-js:latest
     container_name: sawtooth-shell-default-0
     stop_signal: SIGKILL
     environment:
       - REST_API_URL=http://rest-api-0:8008
+      - Server_url=http://192.168.0.102:8000
+      - CLIENT_NUMBER=1
+      - cam_url=http://172.19.111.175:8080/video
+  
   validator-0:
-    image: adaephonben/sawtooth-core-validator
+    image: hyperledger/sawtooth-validator:chime
     container_name: sawtooth-validator-default-0
     expose:
       - 4004
@@ -52,18 +66,26 @@ services:
       - "5050:5050"
       - "8800:8800"
     command: tail -f /dev/null
+    environment:
+      MY_IP: "192.168.0.102"
+      OTHER_IP_1: "192.168.0.104"
+      OTHER_IP_2: "192.168.0.107"
+      OTHER_IP_3: "192.168.0.103"
+  
   pbft-0:
-    image: adaephonben/sawtooth-pbft
+    image: hyperledger/sawtooth-pbft-engine:chime
     container_name: sawtooth-pbft-engine-default-0
     command: pbft-engine -vv --connect tcp://validator-0:5050
     stop_signal: SIGKILL
+  
   junction-tp-0:
-    image: adaephonben/junction-tp:latest
+    image: reshu1docker/junction-tp-js:latest
     container_name: sawtooth-junction-tp-js-default-0
     expose:
       - 4004
     environment: 
       - VALIDATOR_URL=tcp://validator-0:4004
       - INFO=Yes
-      - SERVER_URL=http://candle01.cse.iith.ac.in:8000
+      - Server_url=http://192.168.0.102:8000
+      - cam_url=http://192.168.0.107:8080/video
     stop_signal: SIGKILL

@@ -1,17 +1,18 @@
-import the opencv library
+# import the opencv library
 import cv2
 import time
 import os
 import requests
 # define a video capture object
 while True:
-    vid = cv2.VideoCapture(0)
+    vid = cv2.VideoCapture(os.environ("CAMERA_URL"))
     if vid.isOpened() == False:
         print("Unable to read camera feed")
     frame_width = int(vid.get(3))
     frame_height = int(vid.get(4))
     print("In main loop")
-    out = cv2.VideoWriter('outfile.avi',cv2.VideoWriter_fourcc(*'MJPG'),10,(frame_width,frame_height))
+    out = cv2.VideoWriter('outfile.avi', cv2.VideoWriter_fourcc(
+        *'MJPG'), 10, (frame_width, frame_height))
     for i in range(50):
         ret, frame = vid.read()
         if ret == True:
